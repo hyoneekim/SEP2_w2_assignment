@@ -9,7 +9,6 @@ RUN apt-get update && \
     fontconfig \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 폰트 캐시 갱신
 RUN fc-cache -fv
 
 RUN apt-get update && apt-get install -y wget unzip \
@@ -24,10 +23,6 @@ ENV LANGUAGE=ja_JP:ja
 ENV LC_ALL=ja_JP.UTF-8
 
 RUN cp /opt/javafx-sdk-21.0.2/lib/*.so /usr/lib/ && ldconfig
-
-# 폰트 확인용
-RUN find /usr/share/fonts -name "*Noto*CJK*" 2>/dev/null || echo "CJK font not found"
-RUN fc-list | grep -i "CJK" || echo "No CJK fonts found"
 
 WORKDIR /app
 
