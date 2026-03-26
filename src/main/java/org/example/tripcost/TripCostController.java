@@ -11,11 +11,14 @@ import javafx.scene.layout.VBox;
 import org.example.tripcost.service.LocalizationService;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Map;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
-public class AverageSpeedController {
+public class TripCostController {
 
     @FXML private VBox rootVBox;
     @FXML private Label lblTitle;
@@ -29,7 +32,7 @@ public class AverageSpeedController {
     @FXML private Label lblResult;
     @FXML private Label lblLocalTime;
 
-    private Locale currentLocale = new Locale("en", "UK");
+    private Locale currentLocale = new Locale("en", "GB");
     private Map<String, String> localizedStrings;
     /**
      * Initialize the controller - called automatically after FXML loading
@@ -49,13 +52,13 @@ public class AverageSpeedController {
      * Language button handlers
      */
     @FXML
-    public void onENClick(ActionEvent e) { setLanguage(new Locale("en", "UK")); }
+    public void onENClick(ActionEvent e) { setLanguage(new Locale("en", "GB")); }
 
     @FXML
     public void onFRClick(ActionEvent e) { setLanguage(new Locale("fr", "FR")); }
 
     @FXML
-    public void onJAClick(ActionEvent e) { setLanguage(new Locale("jp", "JA")); }
+    public void onJAClick(ActionEvent e) { setLanguage(new Locale("ja", "JP")); }
 
     @FXML
     public void onFAClick(ActionEvent e) { setLanguage(new Locale("fa", "IR")); }
@@ -156,11 +159,22 @@ public class AverageSpeedController {
                 localizedStrings.getOrDefault("time_format", "HH:mm:ss")
         ).withLocale(locale);
 
+       String zoneId;
+
+        switch (locale.getCountry()){
+            case "FR" -> zoneId = "Europe/Paris";
+            case "JP" -> zoneId = "Asia/Tokyo";
+            case "IR" -> zoneId = "Asia/Tehran";
+            case "GB" -> zoneId = "Europe/London";
+            default -> zoneId = "UTC";
+        }
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(zoneId));
+
         String timeStr = String.format(
                 localizedStrings.getOrDefault("current_time", "Current Time: %s"),
-                now.format(formatter)
+                zonedDateTime.format(formatter)
         );
-        lblLocalTime.setText(timeStr);
+        lblLocalTime.setText( zoneId + ": " +timeStr);
     }
 
 }

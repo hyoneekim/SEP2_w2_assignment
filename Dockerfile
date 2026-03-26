@@ -1,46 +1,50 @@
-FROM eclipse-temurin:21-jdk
+FROM --platform=linux/amd64 eclipse-temurin:21-jdk
 
 ENV DISPLAY=host.docker.internal:0.0
 
-# Install only required libraries (NO MAVEN HERE)
 RUN apt-get update && \
-    apt-get install -y maven wget unzip libgtk-3-0 libgbm1 libx11-6 && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get install -y maven wget unzip libgtk-3-0 libgbm1 libx11-6 \
+    fonts-noto-cjk \
+    fonts-noto-ui-core \
+    fontconfig \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Download JavaFX SDK 21
-RUN wget https://download2.gluonhq.com/openjfx/21.0.2/openjfx-21.0.2_linux-aarch64_bin-sdk.zip -O /tmp/openjfx.zip && \
-    unzip /tmp/openjfx.zip -d /opt && \
-    rm /tmp/openjfx.zip
+# 폰트 캐시 갱신
+RUN fc-cache -fv
 
-RUN cp /opt/javafx-sdk-21/lib/*.so /usr/lib/ && ldconfig
+RUN apt-get update && apt-get install -y wget unzip \
+ && wget https://download2.gluonhq.com/openjfx/21.0.2/openjfx-21.0.2_linux-x64_bin-sdk.zip \
+ && unzip openjfx-21.0.2_linux-x64_bin-sdk.zip -d /opt
 
+RUN apt-get update && apt-get install -y locales && \
+    locale-gen ja_JP.UTF-8 && \
+    update-locale LANG=ja_JP.UTF-8
+ENV LANG=ja_JP.UTF-8
+ENV LANGUAGE=ja_JP:ja
+ENV LC_ALL=ja_JP.UTF-8
+
+RUN cp /opt/javafx-sdk-21.0.2/lib/*.so /usr/lib/ && ldconfig
+
+# 폰트 확인용
+RUN find /usr/share/fonts -name "*Noto*CJK*" 2>/dev/null || echo "CJK font not found"
+RUN fc-list | grep -i "CJK" || echo "No CJK fonts found"
 
 WORKDIR /app
 
-# Copy project
 COPY pom.xml .
 COPY src ./src
 
-RUN mvn install:install-file -Dfile=/opt/javafx-sdk-21/lib/javafx.controls.jar \
-      -DgroupId=org.openjfx -DartifactId=javafx-controls \
-      -Dversion=21.0.2 -Dpackaging=jar && \
-    mvn install:install-file -Dfile=/opt/javafx-sdk-21/lib/javafx.graphics.jar \
-      -DgroupId=org.openjfx -DartifactId=javafx-graphics \
-      -Dversion=21.0.2 -Dpackaging=jar && \
-    mvn install:install-file -Dfile=/opt/javafx-sdk-21/lib/javafx.base.jar \
-      -DgroupId=org.openjfx -DartifactId=javafx-base \
-      -Dversion=21.0.2 -Dpackaging=jar && \
-    mvn install:install-file -Dfile=/opt/javafx-sdk-21/lib/javafx.fxml.jar \
-      -DgroupId=org.openjfx -DartifactId=javafx-fxml \
-      -Dversion=21.0.2 -Dpackaging=jar
-
-# ✅ NOW Maven works correctly
 RUN mvn clean package -DskipTests
 
-# Debug
+ENV JAVA_TOOL_OPTIONS="-Dprism.order=sw"
+
 RUN ls -l target/
 
 CMD ["java", "-Dprism.order=sw", \
-                  "-Dprism.verbose=true", \
-                  "-Djava.library.path=/opt/javafx-sdk-21/lib:/usr/lib", \
-                  "--module-path", "--module-path", "/opt/javafx-sdk-21/lib", "--add-modules", "javafx.controls,javafx.fxml", "-jar", "target/tripcost.jar"]
+             "-Dprism.verbose=true", \
+             "-Djava.library.path=/opt/javafx-sdk-21.0.2/lib:/usr/lib", \
+             "--module-path", "/opt/javafx-sdk-21.0.2/lib", \
+             "--add-modules", "javafx.controls,javafx.fxml", \
+             "-Djavafx.font.path=/usr/share/fonts/opentype/noto", \
+             "-Dprism.fontdir=/usr/share/fonts/opentype/noto", \
+             "-jar", "target/tripcost.jar"]

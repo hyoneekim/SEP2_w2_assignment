@@ -14,7 +14,7 @@ public class LocalizationService {
 
         try {
             ResourceBundle bundle = ResourceBundle.getBundle(
-                    "org.example.avgspd.i18n.MessagesBundle",
+                    "org.example.tripcost.i18n.MessagesBundle",
                     locale
             );
 
@@ -27,7 +27,7 @@ public class LocalizationService {
             // Fallback to English
             try {
                 ResourceBundle fallback = ResourceBundle.getBundle(
-                        "org.example.avgspd.i18n.MessagesBundle",
+                        "org.example.tripcost.i18n.MessagesBundle",
                         new Locale("en", "UK")
                 );
                 for (String key : fallback.keySet()) {

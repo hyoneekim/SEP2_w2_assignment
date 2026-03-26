@@ -15,7 +15,7 @@
 <VBox fx:id="rootVBox"
       xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.tripcost.AverageSpeedController"
+      fx:controller="org.example.tripcost.TripCostController"
       spacing="15"
       alignment="TOP_CENTER"
       stylesheets="@style.css">
