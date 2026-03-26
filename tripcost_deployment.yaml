@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: avgspeed-app
+  name: tripcost-app
   labels:
-    app: avgspeed-app
+    app: tripcost-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: avgspeed-app
+      app: tripcost-app
   template:
     metadata:
       labels:
-        app: avgspeed-app
+        app: tripcost-app
     spec:
       containers:
         - name: tripcost-app
-          image: hyoneekim/tripcost-app:latest # need to change to my own image
+          image: tripcost-app:latest
           imagePullPolicy: Never   # use Never for local images
           env:
             - name: DISPLAY

@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Download JavaFX SDK 21
-RUN wget https://download2.gluonhq.com/openjfx/21/openjfx-21_linux-aarch64_bin-sdk.zip -O /tmp/openjfx.zip && \
+RUN wget https://download2.gluonhq.com/openjfx/21.0.2/openjfx-21.0.2_linux-aarch64_bin-sdk.zip -O /tmp/openjfx.zip && \
     unzip /tmp/openjfx.zip -d /opt && \
     rm /tmp/openjfx.zip
 
@@ -20,6 +20,19 @@ WORKDIR /app
 # Copy project
 COPY pom.xml .
 COPY src ./src
+
+RUN mvn install:install-file -Dfile=/opt/javafx-sdk-21/lib/javafx.controls.jar \
+      -DgroupId=org.openjfx -DartifactId=javafx-controls \
+      -Dversion=21.0.2 -Dpackaging=jar && \
+    mvn install:install-file -Dfile=/opt/javafx-sdk-21/lib/javafx.graphics.jar \
+      -DgroupId=org.openjfx -DartifactId=javafx-graphics \
+      -Dversion=21.0.2 -Dpackaging=jar && \
+    mvn install:install-file -Dfile=/opt/javafx-sdk-21/lib/javafx.base.jar \
+      -DgroupId=org.openjfx -DartifactId=javafx-base \
+      -Dversion=21.0.2 -Dpackaging=jar && \
+    mvn install:install-file -Dfile=/opt/javafx-sdk-21/lib/javafx.fxml.jar \
+      -DgroupId=org.openjfx -DartifactId=javafx-fxml \
+      -Dversion=21.0.2 -Dpackaging=jar
 
 # ✅ NOW Maven works correctly
 RUN mvn clean package -DskipTests
