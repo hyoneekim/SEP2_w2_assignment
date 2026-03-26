@@ -1,4 +1,4 @@
-package org.example.avgspd.service;
+package org.example.tripcost.service;
 
 import java.util.HashMap;
 import java.util.Locale;

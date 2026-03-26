@@ -15,8 +15,8 @@ spec:
         app: avgspeed-app
     spec:
       containers:
-        - name: avgspeed-app
-          image: amirdirin/sep2_week2_avgspd:latest
+        - name: tripcost-app
+          image: hyoneekim/tripcost-app:latest # need to change to my own image
           imagePullPolicy: Never   # use Never for local images
           env:
             - name: DISPLAY

@@ -1,15 +1,14 @@
-package org.example.avgspd;
+package org.example.tripcost;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import org.example.avgspd.service.LocalizationService;
+import org.example.tripcost.service.LocalizationService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,9 +20,11 @@ public class AverageSpeedController {
     @FXML private VBox rootVBox;
     @FXML private Label lblTitle;
     @FXML private Label lblDistant;
-    @FXML private Label lblTime;
-    @FXML private TextField tfDistant;
-    @FXML private TextField tfTime;
+    @FXML private Label lblConsumption;
+    @FXML private Label lblPrice;
+    @FXML private TextField txtDistance;
+    @FXML private TextField txtConsumption;
+    @FXML private TextField txtPrice;
     @FXML private Button btnCalculate;
     @FXML private Label lblResult;
     @FXML private Label lblLocalTime;
@@ -39,8 +40,9 @@ public class AverageSpeedController {
         setLanguage(currentLocale);
 
         // Add listeners to clear result when input changes
-        tfDistant.textProperty().addListener((obs, oldVal, newVal) -> lblResult.setText(""));
-        tfTime.textProperty().addListener((obs, oldVal, newVal) -> lblResult.setText(""));
+        txtDistance.textProperty().addListener((obs, oldVal, newVal) -> lblResult.setText(""));
+        txtConsumption.textProperty().addListener((obs, oldVal, newVal) -> lblResult.setText(""));
+        txtPrice.textProperty().addListener((obs, oldVal, newVal) -> lblResult.setText(""));
     }
 
     /**
@@ -53,33 +55,32 @@ public class AverageSpeedController {
     public void onFRClick(ActionEvent e) { setLanguage(new Locale("fr", "FR")); }
 
     @FXML
-    public void onVIClick(ActionEvent e) { setLanguage(new Locale("vi", "VN")); }
-
-    @FXML
-    public void onURClick(ActionEvent e) { setLanguage(new Locale("ur", "PK")); }
+    public void onJAClick(ActionEvent e) { setLanguage(new Locale("jp", "JA")); }
 
     @FXML
     public void onFAClick(ActionEvent e) { setLanguage(new Locale("fa", "IR")); }
 
     /**
-     * Calculate BMI button handler
+     * Calculate consumption and cost based on user input
      */
     @FXML
     public void onCalculateClick(ActionEvent e) {
         try {
-            double distant = Double.parseDouble(tfDistant.getText());
-            double time = Double.parseDouble(tfTime.getText());
+            double distant = Double.parseDouble(txtDistance.getText());
+            double consumption = Double.parseDouble(txtConsumption.getText());
+            double price = Double.parseDouble(txtPrice.getText());
 
-            if (distant <= 0 || time <= 0) {
+            if (distant <= 0 || consumption <= 0 || price <= 0) {
                 lblResult.setText(localizedStrings.getOrDefault("error_invalid_input", "Please enter valid numbers"));
                 return;
             }
+            double totalFuel = (distant / 100) * consumption;
+            double totalCost = totalFuel * price;
 
-            double average = distant / time;
 
-
-            String result = String.format(localizedStrings.getOrDefault("avg_result", "average speed: %.2f"), average);
-            lblResult.setText(result);
+            String result = localizedStrings.getOrDefault("result_label", "Total cost");
+            String currency = localizedStrings.getOrDefault("currency", "EUR");
+            lblResult.setText(String.format("%.2f l / %s: %.2f %s", totalFuel, result, totalCost, currency));
 
         } catch (NumberFormatException ex) {
             lblResult.setText(localizedStrings.getOrDefault("error_invalid_input", "Please enter valid numbers"));
@@ -97,10 +98,16 @@ public class AverageSpeedController {
         localizedStrings = LocalizationService.getLocalizedStrings(locale);
 
         // Update all UI text
+
         lblTitle.setText(localizedStrings.getOrDefault("title", "Average Calculator"));
-        lblDistant.setText(localizedStrings.getOrDefault("distant", "Distant (km):"));
-        lblTime.setText(localizedStrings.getOrDefault("time", "Time (h):"));
-        btnCalculate.setText(localizedStrings.getOrDefault("calculate", "Calculate Average Speed"));
+        lblDistant.setText(localizedStrings.getOrDefault("distance", "Distant (km):"));
+        lblConsumption.setText(localizedStrings.getOrDefault("consumption", "Fuel Consumption (L/100 km):"));
+        lblPrice.setText(localizedStrings.getOrDefault("price", "Fuel Price (per liter):"));
+        btnCalculate.setText(localizedStrings.getOrDefault("calculate", "Calculate total cost"));
+
+        txtDistance.setPromptText(localizedStrings.getOrDefault("distance_prompt", "Enter distance in km"));
+        txtConsumption.setPromptText(localizedStrings.getOrDefault("consumption_prompt", "Enter fuel consumption in L/100 km"));
+        txtPrice.setPromptText(localizedStrings.getOrDefault("price_prompt", "Enter fuel price per liter"));
 
         // Update time display with new locale
         displayLocalTime(locale);
@@ -133,8 +140,9 @@ public class AverageSpeedController {
             // Step 4: Align text inside TextFields
             String alignment = isRTL ? "-fx-text-alignment: right; -fx-alignment: center-right;"
                     : "-fx-text-alignment: left; -fx-alignment: center-left;";
-            tfDistant.setStyle(alignment);
-            tfTime.setStyle(alignment);
+            txtDistance.setStyle(alignment);
+            txtConsumption.setStyle(alignment);
+            txtPrice.setStyle(alignment);
         });
     }
 
@@ -143,6 +151,7 @@ public class AverageSpeedController {
      */
     private void displayLocalTime(Locale locale) {
         LocalDateTime now = LocalDateTime.now();
+        //TODO: change the local time of the location
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
                 localizedStrings.getOrDefault("time_format", "HH:mm:ss")
         ).withLocale(locale);

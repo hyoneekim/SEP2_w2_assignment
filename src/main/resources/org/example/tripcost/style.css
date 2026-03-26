@@ -1,13 +1,13 @@
 /* Root VBox */
 .root {
-    -fx-background-color: linear-gradient(to bottom right, #6a11cb, #2575fc);
+    -fx-background-color: #f0fae8;
     -fx-padding: 20px;
     -fx-spacing: 15px;
 }
 
 /* Labels */
 .label {
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #163300;
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
 }
@@ -16,59 +16,60 @@
 #avgTitle {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
-    -fx-text-fill: #ffd700; /* gold color */
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 4,0,2,2 );
+    -fx-text-fill: #163300;
+    -fx-effect: none;
 }
 
 /* TextFields */
 .text-field {
-    -fx-background-radius: 10;
+    -fx-background-radius: 8;
     -fx-background-color: #ffffff;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #163300;
     -fx-padding: 8 12 8 12;
     -fx-font-size: 14px;
-    -fx-border-color: #4CAF50;
-    -fx-border-radius: 10;
-    -fx-border-width: 2;
+    -fx-border-color: #163300;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
 }
 
 /* Buttons */
 .button {
-    -fx-background-radius: 20;
-    -fx-background-color: linear-gradient(to right, #ff7e5f, #feb47b);
-    -fx-text-fill: white;
+    -fx-background-radius: 24;
+    -fx-background-color: #163300;
+    -fx-text-fill: #9fe870;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-padding: 8 20 8 20;
     -fx-cursor: hand;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.3) , 3,0,2,2 );
+    -fx-effect: none;
 }
 
 /* Button Hover Effect */
 .button:hover {
-    -fx-background-color: linear-gradient(to right, #feb47b, #ff7e5f);
+    -fx-background-color: #1f4a00;
 }
 
 /* Button Pressed Effect */
 .button:pressed {
-    -fx-background-color: linear-gradient(to right, #d35400, #e67e22);
+    -fx-background-color: #0a1f00;
     -fx-effect: none;
 }
 
 /* Result Label */
 #lblResult {
-    -fx-text-fill: white; /* text color */
+    -fx-text-fill: #9fe870;
     -fx-font-weight: bold;
     -fx-font-size: 18px;
-    -fx-background-color: #3498db; /* a bright background */
+    -fx-background-color: #163300;
     -fx-padding: 10;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-width: 0;
 }
 
 /* Local Time Label */
 #lblLocalTime {
-    -fx-text-fill: #fffa;
+    -fx-text-fill: #4a7a2a;
     -fx-font-size: 14px;
     -fx-font-style: italic;
 }

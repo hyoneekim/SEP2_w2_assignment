@@ -24,7 +24,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>org.example.avgspd.AverageSpeedApp</mainClass>
+              <mainClass>org.example.tripcost.TripCostApp</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
@@ -51,7 +51,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>org.example.avgspd.AverageSpeedApp</mainClass>
+                  <mainClass>org.example.tripcost.TripCostApp</mainClass>
                 </transformer>
               </transformers>
             </configuration>

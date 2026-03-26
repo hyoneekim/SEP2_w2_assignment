@@ -1,4 +1,4 @@
-package org.example.avgspd;
+package org.example.tripcost;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,12 +8,12 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-public class AverageSpeedApp extends Application {
+public class TripCostApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Load the FXML file
-        URL fxmlUrl = getClass().getResource("/org/example/avgspd/avgspd-view.fxml");
+        URL fxmlUrl = getClass().getResource("/org/example/tripcost/avgspd-view.fxml");
         FXMLLoader loader = new FXMLLoader(fxmlUrl);
 
         VBox root = loader.load();
@@ -22,9 +22,9 @@ public class AverageSpeedApp extends Application {
         Scene scene = new Scene(root, 500, 600);
 
         // Then add CSS
-        scene.getStylesheets().add(getClass().getResource("/org/example/avgspd/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/org/example/tripcost/style.css").toExternalForm());
 
-        primaryStage.setTitle("Avg Speed Calculator - LTR/RTL Demo");
+        primaryStage.setTitle("Trip cost calculator");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -15,7 +15,7 @@
 <VBox fx:id="rootVBox"
       xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.avgspd.AverageSpeedController"
+      fx:controller="org.example.tripcost.AverageSpeedController"
       spacing="15"
       alignment="TOP_CENTER"
       stylesheets="@style.css">
@@ -29,8 +29,7 @@
     <HBox spacing="10" alignment="CENTER">
         <Button text="English" onAction="#onENClick" style="-fx-font-weight: bold;"/>
         <Button text="Français" onAction="#onFRClick"/>
-        <Button text="Tiếng Việt" onAction="#onVIClick"/>
-        <Button text="اردو" onAction="#onURClick"/>
+        <Button text="日本語" onAction="#onJAClick"/>
         <Button text="فارسی" onAction="#onFAClick"/>
     </HBox>
 
@@ -39,19 +38,24 @@
     <!-- avgSpeed Input Fields -->
     <GridPane hgap="10" vgap="10" alignment="CENTER">
         <Label fx:id="lblDistant" text="Distant (km):" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <TextField fx:id="tfDistant" promptText="Enter distant" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
+        <TextField fx:id="txtDistance" promptText="Trip distance in kilometers" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
 
-        <Label fx:id="lblTime" text="Time (h):" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <TextField fx:id="tfTime" promptText="Enter time" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200"/>
+        <Label fx:id="lblConsumption" text="Fuel Consumption (L/100 km): " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="txtConsumption" promptText="Fuel consumption (L/100 km)" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200"/>
 
-        <Button fx:id="btnCalculate" text="Calculate average" GridPane.columnIndex="0" GridPane.rowIndex="2"
-                GridPane.columnSpan="2" onAction="#onCalculateClick" prefWidth="200"/>
+
+        <Label fx:id="lblPrice" text="Fuel Price (per liter):" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="txtPrice" promptText="Fuel price per liter" GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="200"/>
+
+
+        <Button fx:id="btnCalculate" text="Calculate total fuel and cost" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                GridPane.columnSpan="3" onAction="#onCalculateClick" prefWidth="200"/>
     </GridPane>
 
     <Separator/>
 
     <!-- Result Display -->
-    <Label fx:id="lblResult" text="" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    <Label fx:id="lblResult" text=""/>
 
     <Separator/>
 
